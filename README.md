@@ -1,12 +1,5 @@
 # Student Event Management System
-## Academic Project Report
 
-**Course:** Web Development / Software Engineering  
-**Academic Year:** 2024-2025  
-**Project Type:** Full-Stack Web Application  
-**Technology Stack:** Django, Python, SQLite, Bootstrap 5
-
----
 
 ## Executive Summary
 
