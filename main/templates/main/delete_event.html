@@ -1,0 +1,44 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Delete Event - Student Engagement Platform{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <div class="card shadow border-danger">
+            <div class="card-body p-4">
+                <h2 class="mb-4 text-danger">
+                    <i class="bi bi-exclamation-triangle"></i> Delete Event
+                </h2>
+                
+                <div class="alert alert-danger">
+                    <strong>Warning!</strong> This action cannot be undone.
+                </div>
+                
+                <p>Are you sure you want to delete the following event?</p>
+                
+                <div class="card bg-light mb-4">
+                    <div class="card-body">
+                        <h5>{{ event.title }}</h5>
+                        <p class="mb-1"><strong>Date:</strong> {{ event.date|date:"M d, Y - g:i A" }}</p>
+                        <p class="mb-1"><strong>Location:</strong> {{ event.location }}</p>
+                        <p class="mb-0"><strong>Registered Students:</strong> {{ event.registered_students_count }}</p>
+                    </div>
+                </div>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-danger">
+                            <i class="bi bi-trash"></i> Yes, Delete Event
+                        </button>
+                        <a href="{% url 'dashboard' %}" class="btn btn-secondary">
+                            <i class="bi bi-x-circle"></i> Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

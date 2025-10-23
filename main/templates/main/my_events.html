@@ -1,0 +1,53 @@
+{% extends 'main/base.html' %}
+
+{% block title %}My Events - Student Engagement Platform{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1><i class="bi bi-bookmark"></i> My Registered Events</h1>
+        <p class="text-muted">Events you have registered for</p>
+    </div>
+</div>
+
+{% if registrations %}
+    <div class="row">
+        {% for registration in registrations %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ registration.event.title }}</h5>
+                        <p class="card-text text-muted">
+                            {{ registration.event.description|truncatewords:15 }}
+                        </p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <i class="bi bi-calendar3"></i>
+                            <strong>Date:</strong> {{ registration.event.date|date:"M d, Y - g:i A" }}
+                        </li>
+                        <li class="list-group-item">
+                            <i class="bi bi-geo-alt"></i>
+                            <strong>Location:</strong> {{ registration.event.location }}
+                        </li>
+                        <li class="list-group-item">
+                            <i class="bi bi-clock"></i>
+                            <strong>Registered:</strong> {{ registration.created_at|date:"M d, Y" }}
+                        </li>
+                    </ul>
+                    <div class="card-footer bg-white">
+                        <a href="{% url 'event_detail' registration.event.id %}" class="btn btn-primary btn-sm w-100">
+                            <i class="bi bi-info-circle"></i> View Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="alert alert-info">
+        <i class="bi bi-info-circle"></i> You haven't registered for any events yet. 
+        <a href="{% url 'home' %}">Browse available events</a>!
+    </div>
+{% endif %}
+{% endblock %}

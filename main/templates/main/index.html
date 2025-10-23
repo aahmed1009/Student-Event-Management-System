@@ -1,0 +1,76 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Home - Student Engagement Platform{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="jumbotron bg-light p-5 rounded-3 mb-4">
+            <h1 class="display-4">Welcome to Student Engagement Platform</h1>
+            <p class="lead">Discover and participate in exciting campus events, clubs, and activities.</p>
+            {% if not user.is_authenticated %}
+                <hr class="my-4">
+                <p>Join our community today and never miss an event!</p>
+                <a class="btn btn-primary btn-lg" href="{% url 'register' %}" role="button">
+                    <i class="bi bi-person-plus"></i> Register Now
+                </a>
+                <a class="btn btn-outline-primary btn-lg" href="{% url 'login' %}" role="button">
+                    <i class="bi bi-box-arrow-in-right"></i> Login
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-12">
+        <h2 class="mb-3">
+            <i class="bi bi-calendar-event"></i> Upcoming Events
+        </h2>
+    </div>
+</div>
+
+{% if events %}
+    <div class="row">
+        {% for event in events %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ event.title }}</h5>
+                        <p class="card-text text-muted">
+                            {{ event.description|truncatewords:20 }}
+                        </p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <i class="bi bi-calendar3"></i>
+                            <strong>Date:</strong> {{ event.date|date:"M d, Y - g:i A" }}
+                        </li>
+                        <li class="list-group-item">
+                            <i class="bi bi-geo-alt"></i>
+                            <strong>Location:</strong> {{ event.location }}
+                        </li>
+                        <li class="list-group-item">
+                            <i class="bi bi-person"></i>
+                            <strong>Organizer:</strong> {{ event.organizer.get_full_name|default:event.organizer.username }}
+                        </li>
+                        <li class="list-group-item">
+                            <i class="bi bi-people"></i>
+                            <strong>Registered:</strong> {{ event.registered_students_count }} student{{ event.registered_students_count|pluralize }}
+                        </li>
+                    </ul>
+                    <div class="card-footer bg-white">
+                        <a href="{% url 'event_detail' event.id %}" class="btn btn-primary btn-sm w-100">
+                            <i class="bi bi-info-circle"></i> View Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="alert alert-info">
+        <i class="bi bi-info-circle"></i> No events available at the moment. Check back later!
+    </div>
+{% endif %}
+{% endblock %}

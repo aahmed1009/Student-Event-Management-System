@@ -1,0 +1,86 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Dashboard - Student Engagement Platform{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1>
+            <i class="bi bi-speedometer2"></i> 
+            {% if user.is_superuser %}Admin{% else %}Organizer{% endif %} Dashboard
+        </h1>
+        <p class="text-muted">Welcome, {{ user.get_full_name|default:user.username }}!</p>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-12">
+        <a href="{% url 'create_event' %}" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Create New Event
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <h3 class="mb-3">
+            {% if user.is_superuser %}All Events{% else %}My Events{% endif %}
+        </h3>
+        
+        {% if events %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Title</th>
+                            <th>Date</th>
+                            <th>Location</th>
+                            <th>Registrations</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for event in events %}
+                            <tr>
+                                <td>
+                                    <strong>{{ event.title }}</strong>
+                                </td>
+                                <td>{{ event.date|date:"M d, Y - g:i A" }}</td>
+                                <td>{{ event.location }}</td>
+                                <td>
+                                    <span class="badge bg-info">
+                                        {{ event.registered_students_count }} student{{ event.registered_students_count|pluralize }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="btn-group btn-group-sm" role="group">
+                                        <a href="{% url 'event_detail' event.id %}" class="btn btn-outline-primary" title="View">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                        <a href="{% url 'event_registrations' event.id %}" class="btn btn-outline-info" title="Registrations">
+                                            <i class="bi bi-people"></i>
+                                        </a>
+                                        {% if user.is_superuser or event.organizer == user %}
+                                            <a href="{% url 'edit_event' event.id %}" class="btn btn-outline-warning" title="Edit">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            <a href="{% url 'delete_event' event.id %}" class="btn btn-outline-danger" title="Delete">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                <i class="bi bi-info-circle"></i> No events found. 
+                <a href="{% url 'create_event' %}">Create your first event</a>!
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Event Registrations - Student Engagement Platform{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1><i class="bi bi-people"></i> Event Registrations</h1>
+        <h3 class="text-muted">{{ event.title }}</h3>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Event Details</h5>
+                <p class="mb-1"><strong>Date:</strong> {{ event.date|date:"M d, Y - g:i A" }}</p>
+                <p class="mb-1"><strong>Location:</strong> {{ event.location }}</p>
+                <p class="mb-0"><strong>Total Registrations:</strong> {{ registrations|length }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title mb-3">Registered Students</h5>
+                
+                {% if registrations %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Student Name</th>
+                                    <th>Username</th>
+                                    <th>Email</th>
+                                    <th>Registration Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for registration in registrations %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ registration.student.get_full_name|default:"-" }}</td>
+                                        <td>{{ registration.student.username }}</td>
+                                        <td>{{ registration.student.email|default:"-" }}</td>
+                                        <td>{{ registration.created_at|date:"M d, Y - g:i A" }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle"></i> No students have registered for this event yet.
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <a href="{% url 'dashboard' %}" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Back to Dashboard
+        </a>
+        <a href="{% url 'event_detail' event.id %}" class="btn btn-outline-primary">
+            <i class="bi bi-eye"></i> View Event
+        </a>
+    </div>
+</div>
+{% endblock %}
