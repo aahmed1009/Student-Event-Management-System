@@ -644,13 +644,6 @@ The system is production-ready for deployment and can be extended with the propo
 - Stack Overflow Community
 - Course Instructor and Teaching Assistants
 
----
-
-**Developed by**: [Your Name]  
-**Student ID**: [Your ID]  
-**Course**: [Course Code and Name]  
-**Submission Date**: [Date]  
-**Institution**: [University Name]
 
 ---
 # Student-Event-Management-System
